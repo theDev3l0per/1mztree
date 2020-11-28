@@ -21,7 +21,7 @@ addLayer("tree-tab", {
     cols: 2,
     11: {
       title: "Doubler",
-      cost() {return new Decimal(6).pow(getBuyableAmount(this.layer, 11)).times(10)},
+      cost() {return new Decimal(5).pow(getBuyableAmount(this.layer, 11)).times(10)},
       canAfford() {
         return new Decimal(player.points).gte(this.cost())
       },

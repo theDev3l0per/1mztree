@@ -1,12 +1,12 @@
 let modInfo = {
-	name: "The ??? Tree",
+	name: "1 Million Zeroes NG Tree",
 	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	author: "unpingabot#0245",
+	pointsName: "zeroes",
 	discordName: "",
 	discordLink: "",
 	changelogLink: "https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	
 	offlineLimit: 1,  // In hours
 }
@@ -36,6 +36,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+  gain = gain.mul(buyableEffect(this.layer, 11))
 	return gain
 }
 
