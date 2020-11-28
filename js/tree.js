@@ -29,7 +29,7 @@ addLayer("tree-tab", {
       display() {return `Double your zero gain\n Cost: ${this.cost().round()}\n Effect: ${this.effect().round()}`},
       buy() {
         setBuyableAmount(this.layer, 11, new Decimal(getBuyableAmount(this.layer, 11)).add(1))
-        player.points = player.points.sub(this.cost())
+        player.points = new Decimal(player.points).sub(this.cost())
       },
       effect() {
         return new Decimal(2).pow(getBuyableAmount(this.layer, 11))
@@ -45,12 +45,15 @@ addLayer("tree-tab", {
       display() {return `Triple your zero gain\n Cost: ${this.cost().round()}\n Effect: ${this.effect().round()}`},
       buy() {
         setBuyableAmount(this.layer, 12, new Decimal(getBuyableAmount(this.layer, 12)).add(1))
-        player.points = player.points.sub(this.cost())
+        player.points = new Decimal(player).points.sub(this.cost())
       },
       effect() {
         return new Decimal(3).pow(getBuyableAmount(this.layer, 12))
       }
     },
   },
-    tabFormat: ["buyables",["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]]
+    tabFormat: ["buyables",["tree", function() {return (layoutInfo.treeLayout ? layoutInfo.treeLayout : TREE_LAYERS)}]],
+  update(diff){
+    player.points = player.points.min(1e6)
+  }
 })
