@@ -37,7 +37,7 @@ addLayer("tree-tab", {
     },
     12: {
       title: "Tripler",
-      cost() {return new Decimal(7).pow(getBuyableAmount(this.layer, 12)).times(1000)},
+      cost() {return new Decimal(7).pow(getBuyableAmount(this.layer, 12)).times(100)},
       canAfford() {
         return new Decimal(player.points).gte(this.cost())
       },
