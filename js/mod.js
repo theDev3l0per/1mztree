@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "1 Million Zeroes NG Tree",
 	id: "mymod",
-	author: "unpingabot#0245",
+	author: "unpingabot#0245 and randomtuba#8432",
 	pointsName: "zeroes",
 	discordName: "",
 	discordLink: "",
@@ -38,6 +38,8 @@ function getPointGen() {
 	let gain = new Decimal(1)
   gain = gain.mul(buyableEffect(this.layer, 11))
   gain = gain.mul(buyableEffect(this.layer, 12))
+  gain = gain.mul(upgradeEffect("o",11))
+  gain = gain.mul(upgradeEffect("o",13))
 	return gain
 }
 
