@@ -1,4 +1,0 @@
-addLayer("none", {
-    layerShown: false,
-  
-})
