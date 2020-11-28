@@ -37,6 +37,7 @@ function getPointGen() {
 
 	let gain = new Decimal(1)
   gain = gain.mul(buyableEffect(this.layer, 11))
+  gain = gain.mul(buyableEffect(this.layer, 12))
 	return gain
 }
 
