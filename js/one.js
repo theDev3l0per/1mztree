@@ -13,20 +13,27 @@ addLayer("o", {
   resource: "one points", // The name of this layer's main prestige resource.
   row: 0, // The row this layer is on (0 is the first row).
 
-  baseResource: "points", // The name of the resource your prestige gain is based on.
+  baseResource: "zeroes", // The name of the resource your prestige gain is based on.
   baseAmount() {
     return player.points;
   }, // A function to return the current amount of baseResource.
 
-  requires() {return hasUpgrade("o", 12) ? new Decimal(5e5) : new Decimal(1e6)}, // The amount of the base needed to  gain 1 of the prestige currency.
+  requires() {
+    goal = new Decimal(1e6)
+    if (hasUpgrade("o", 12)) goal = goal.div(2)
+    if (hasChallenge("o", 11)) goal = goal.div(2)
+    return goal
+  }, // The amount of the base needed to  gain 1 of the prestige currency.
   // Also the amount required to unlock the layer.
 
   type: "normal", // Determines the formula used for calculating prestige currency.
   exponent: 0.5, // "normal" prestige gain is (currency^exponent).
 
   gainMult() {
-    // Returns your multiplier to your gain of the prestige resource.
-    return new Decimal(1); // Factor in any bonuses multiplying gain here.
+    
+    mult = new Decimal(1);
+    if (hasChallenge("o", 21)) mult = mult.mul(2)
+    return mult
   },
   gainExp() {
     // Returns your exponent to your gain of the prestige resource.
@@ -41,9 +48,44 @@ addLayer("o", {
   layerShown() {
     return player.o.unlocked();
   }, // Returns a bool for if this layer's node should be visible in the tree.
+  challenges: {
+    rows: 2,
+    cols: 2,
+    11: {
+      name: "Goal++",
+      challengeDescription: "The goal for this is 2 million zeroes, thats it",
+      rewardDescription: "Devide the goal for one resets by 2",
+      goal: new Decimal(2e6),
+      unlocked() {return hasUpgrade("o", 15)}
+    },
+    12: {
+      name: "No more inflation",
+      challengeDescription: "You cant buy triplers, have fun getting to the goal.",
+      rewardDescription: "Triplers cost scaling goes from 7x to 6x",
+      goal() {
+        goal = new Decimal(1e6)
+        if (hasUpgrade("o", 12)) goal = goal.div(2)
+        if (hasChallenge("o", 11)) goal = goal.div(2)
+        return goal
+      },
+      unlocked() {return hasUpgrade("o", 15)}
+    },
+    21: {
+      name: "Inactivity",
+      challengeDescription: "Zero production is divided by 10",
+      rewardDescription: "you gain 2x one points",
+      goal() {
+        goal = new Decimal(1e6)
+        if (hasUpgrade("o", 12)) goal = goal.div(2)
+        if (hasChallenge("o", 11)) goal = goal.div(2)
+        return goal
+      },
+      unlocked() {return hasUpgrade("o", 15)}
+    }
+  },
   upgrades: {
-    rows: 1,
-    cols: 4,
+    rows: 2,
+    cols: 5,
     11: {
       cost: new Decimal(1),
       title: "Extra Tripler",
@@ -69,6 +111,29 @@ addLayer("o", {
       cost: new Decimal(2),
       title: "Faster Scaling?",
       description: "The first buyables scaling goes from 5x to 4x",
+    },
+    15: {
+      cost: new Decimal(3),
+      title: "Challenger",
+      description: "Unlock Challenges"
+    },
+    21: {
+      cost: new Decimal(4),
+      title: "1+1 = 0",
+      description:"Boost zeroes based on ones",
+      effect() {
+        return hasUpgrade("o",21) ? new Decimal(player.o.points).add(1).root(2).min(10) : new Decimal(1)
+      },
+      effectDisplay() {return this.effect().round()}
+    },
+    22: {
+      cost: new Decimal(5),
+      title: "Even more free stuff",
+      description:"Gain one free tripler and one free doubler",
+      effect() {
+        return hasUpgrade("o",22) ? new Decimal(6) : new Decimal(1)
+      },
+      effectDisplay() {return this.effect().round()}
     }
   }
 });

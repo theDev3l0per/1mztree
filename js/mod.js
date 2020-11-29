@@ -38,8 +38,12 @@ function getPointGen() {
 	let gain = new Decimal(1)
   gain = gain.mul(buyableEffect(this.layer, 11))
   gain = gain.mul(buyableEffect(this.layer, 12))
+  gain = gain.mul(buyableEffect(this.layer, 21))
   gain = gain.mul(upgradeEffect("o",11))
   gain = gain.mul(upgradeEffect("o",13))
+  gain = gain.mul(upgradeEffect("o",21))
+  gain = gain.mul(upgradeEffect("o",22))
+  if (inChallenge("o", 21)) gain = gain.div(10)
 	return gain
 }
 
